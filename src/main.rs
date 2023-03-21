@@ -9,6 +9,9 @@ use url::Url;
 #[derive(Parser)]
 struct Cli {
     query: String,
+
+    #[arg(short, long, default_value = "1")]
+    num_count: Option<usize>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -55,7 +58,7 @@ async fn main() {
     let buf = hyper::body::to_bytes(resp).await.unwrap();
     let response: Response = serde_json::from_slice(&buf).unwrap();
 
-    for item in response.items {
+    for item in response.items.iter().take(args.num_count.unwrap()) {
         println!("Title: {}", item.title);
         println!("Link: {}", item.link);
         println!("Snippet: {}", item.snippet);
