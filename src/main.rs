@@ -19,8 +19,17 @@ struct Cli {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct Response {
     items: Option<Vec<Item>>,
+    search_information: Option<SearchInformation>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct SearchInformation {
+    search_time: f64,
+    total_results: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -36,6 +45,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     dotenv().ok();
 
+    let meta_template = "Search time: <search_time>; Total results: <total_results>\n";
     let search_template = "[<index>] <link>\n<snippet>\n";
 
     let args = Cli::parse();
@@ -73,6 +83,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_context(|| "Failed to get body from response")?;
     let response: Response =
         serde_json::from_slice(&buf).with_context(|| "Failed to parse body to JSON")?;
+
+    if response.search_information.is_some() {
+        let search_information = response.search_information.unwrap();
+
+        let mut meta = meta_template.replace(
+            "<search_time>",
+            search_information.search_time.to_string().as_str(),
+        );
+        meta = meta.replace("<total_results>", search_information.total_results.as_str());
+        println!("{}", meta);
+    }
 
     if response.items.is_none() {
         println!("[0] No results found");
