@@ -2,10 +2,14 @@
 name = "rusty-search"
 version = "0.1.0"
 edition = "2021"
-authors = ["Reljod Oreta"]
-description = "This is a basic command-line interface (CLI) application developed in Rust that enables users to conduct web searches."
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["Reljod Oreta <oretareljod@gmail.com>"]
+license = "AGPL v3"
+description = "A command-line interface (CLI) application developed in Rust that enables users to conduct web searches."
+readme = "README.md"
+homepage = "https://github.com/Reljod/rusty-search"
+repository = "https://github.com/Reljod/rusty-search"
+keywords = ["search", "cli", "rust", "rusty-search", "reljod"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 hyper = { version = "0.14", features = ["full"] }
