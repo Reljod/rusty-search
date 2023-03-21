@@ -20,13 +20,7 @@ struct Cli {
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Response {
-    context: ContextResponse,
-    items: Vec<Item>,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct ContextResponse {
-    title: String,
+    items: Option<Vec<Item>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -80,8 +74,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let response: Response =
         serde_json::from_slice(&buf).with_context(|| "Failed to parse body to JSON")?;
 
+    if response.items.is_none() {
+        println!("[0] No results found");
+        return Ok(());
+    }
+
     for (ind, item) in response
         .items
+        .unwrap()
         .iter()
         .take(args.num_count.unwrap())
         .enumerate()
