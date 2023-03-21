@@ -2,6 +2,8 @@
 name = "rusty-search"
 version = "0.1.0"
 edition = "2021"
+authors = ["Reljod Oreta"]
+description = "This is a basic command-line interface (CLI) application developed in Rust that enables users to conduct web searches."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

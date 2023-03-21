@@ -8,9 +8,12 @@ use std::env;
 use url::Url;
 
 #[derive(Parser)]
+#[command(author, version, about, long_about = None)]
 struct Cli {
+    /// The query to search for on Google
     query: String,
 
+    /// The number of results to return
     #[arg(short, long, default_value = "1")]
     num_count: Option<usize>,
 }
