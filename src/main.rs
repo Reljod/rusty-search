@@ -38,6 +38,8 @@ async fn main() {
 
     dotenv().ok();
 
+    let search_template = "[<index>] <link>\n<snippet>\n";
+
     let args = Cli::parse();
 
     let https = HttpsConnector::new();
@@ -58,10 +60,16 @@ async fn main() {
     let buf = hyper::body::to_bytes(resp).await.unwrap();
     let response: Response = serde_json::from_slice(&buf).unwrap();
 
-    for item in response.items.iter().take(args.num_count.unwrap()) {
-        println!("Title: {}", item.title);
-        println!("Link: {}", item.link);
-        println!("Snippet: {}", item.snippet);
-        println!("");
+    for (ind, item) in response
+        .items
+        .iter()
+        .take(args.num_count.unwrap())
+        .enumerate()
+    {
+        // get items index count
+        let mut search = search_template.replace("<index>", (ind + 1).to_string().as_str());
+        search = search.replace("<link>", item.link.as_str());
+        search = search.replace("<snippet>", item.snippet.as_str());
+        println!("{}", search);
     }
 }
