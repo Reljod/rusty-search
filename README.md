@@ -16,4 +16,8 @@ rusty-search "Rusty Search Web Search"
 ```sh
 cargo install rusty-search
 rusty-search --version
+
+## Important: Export Google API key
+export GOOGLE_SEARCH_API_KEY=<REPLACE_WITH_YOUR_API_KEY>
+export GOOGLE_SEARCH_CX=<REPLACE_WITH_YOUR_CX>
 ```
